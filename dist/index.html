@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WorkSphere.design — Digital & Visual Design Architecture</title>
+    <meta name="description" content="Showcasing bespoke graphic design, vector art, brand identities, and interactive Figma & Lunacy digital experiences." />
+    <meta property="og:image" content="/worksphere-logo.png" />
+    <meta property="og:title" content="WorkSphere.design" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+      // Prevent theme flash
+      (function() {
+        const savedTheme = localStorage.getItem('worksphere_theme');
+        if (savedTheme === 'light') {
+          document.documentElement.classList.remove('dark');
+        } else {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+    <script type="module" crossorigin src="./assets/index.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index.css">
+  </head>
+  <body class="bg-[#F8F9FC] dark:bg-[#07080B] text-studio-900 dark:text-[#EAECEF] antialiased selection:bg-indigo-500 selection:text-white transition-colors duration-300 min-h-screen">
+    <div id="root"></div>
+  </body>
+</html>
