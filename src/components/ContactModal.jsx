@@ -1,36 +1,79 @@
-import React, { useState } from 'react';
-import { X, Send, Sparkles, CheckCircle2, MessageSquare, Mail } from 'lucide-react';
+import React, { useState } from "react";
+import {
+  X,
+  Send,
+  Sparkles,
+  CheckCircle2,
+  MessageSquare,
+  Mail,
+} from "lucide-react";
 
-export default function ContactModal({ isOpen, onClose, preselectedProject, calculatorBrief }) {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [service, setService] = useState(preselectedProject?.category || 'Branding & Graphics');
-  const [timeline, setTimeline] = useState('2-4 weeks');
+export default function ContactModal({
+  isOpen,
+  onClose,
+  preselectedProject,
+  calculatorBrief,
+}) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [service, setService] = useState(
+    preselectedProject?.category || "Branding & Graphics",
+  );
+  const [timeline, setTimeline] = useState("2-4 weeks");
   const [message, setMessage] = useState(() => {
-    if (calculatorBrief) return `Hello WorkSphere Atelier!\n\nI configured a tailored scope using your interactive planner:\n${calculatorBrief}\n\nLet's discuss onboarding and delivery dates.`;
-    if (preselectedProject) return `Hello WorkSphere! I'm interested in commissioning a project similar to "${preselectedProject.title}".`;
-    return '';
+    if (calculatorBrief)
+      return `Hello WorkSphere Atelier!\n\nI configured a tailored scope using your interactive planner:\n${calculatorBrief}\n\nLet's discuss onboarding and delivery dates.`;
+    if (preselectedProject)
+      return `Hello WorkSphere! I'm interested in commissioning a project similar to "${preselectedProject.title}".`;
+    return "";
   });
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
 
   // Sync if calculatorBrief changes
   React.useEffect(() => {
     if (calculatorBrief) {
-      setMessage(`Hello WorkSphere Atelier!\n\nI configured a tailored scope using your interactive planner:\n${calculatorBrief}\n\nLet's discuss onboarding and delivery dates.`);
+      setMessage(
+        `Hello WorkSphere Atelier!\n\nI configured a tailored scope using your interactive planner:\n${calculatorBrief}\n\nLet's discuss onboarding and delivery dates.`,
+      );
     } else if (preselectedProject) {
-      setMessage(`Hello WorkSphere! I'm interested in commissioning a project similar to "${preselectedProject.title}".`);
+      setMessage(
+        `Hello WorkSphere! I'm interested in commissioning a project similar to "${preselectedProject.title}".`,
+      );
     }
   }, [calculatorBrief, preselectedProject]);
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => {
-      // Auto close after 3s
-      // onClose();
-    }, 3000);
+    setSending(true);
+    setError("");
+    try {
+      const res = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          "form-name": "inquiry",
+          "bot-field": "",
+          name,
+          email,
+          service,
+          timeline,
+          message,
+          project: preselectedProject?.title || "",
+        }).toString(),
+      });
+      if (!res.ok) throw new Error("Request failed");
+      setSubmitted(true);
+    } catch (err) {
+      setError(
+        "Something went wrong. Please try again or email worksphere.design@gmail.com.",
+      );
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -38,15 +81,19 @@ export default function ContactModal({ isOpen, onClose, preselectedProject, calc
       <div className="fixed inset-0" onClick={onClose} />
 
       <div className="relative w-full max-w-lg z-10 bg-white dark:bg-[#0D0E13] border border-gray-200 dark:border-white/10 rounded-3xl shadow-2xl overflow-hidden">
-        
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-white/10">
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded-lg bg-[#0F1521] p-1 flex items-center justify-center border border-sky-500/20 shadow-xs">
-              <img src="./logo-emblem-transparent.png" alt="WorkSphere" className="w-full h-full object-contain" />
+              <img
+                src="./logo-emblem-transparent.png"
+                alt="WorkSphere"
+                className="w-full h-full object-contain"
+              />
             </div>
             <h3 className="font-display font-bold text-base sm:text-lg text-gray-900 dark:text-white">
-              Work<span className="text-[#38BDF8]">Sphere</span> Commission Inquiry
+              Work<span className="text-[#38BDF8]">Sphere</span> Commission
+              Inquiry
             </h3>
           </div>
           <button
@@ -66,7 +113,8 @@ export default function ContactModal({ isOpen, onClose, preselectedProject, calc
               Inquiry Dispatched!
             </h4>
             <p className="text-xs text-gray-700 dark:text-gray-300 max-w-sm mx-auto leading-relaxed">
-              Thank you {name || 'there'}! The WorkSphere design team will review your project brief and reply within 24 hours.
+              Thank you {name || "there"}! The WorkSphere design team will
+              review your project brief and reply within 24 hours.
             </p>
             <button
               onClick={() => {
@@ -118,8 +166,12 @@ export default function ContactModal({ isOpen, onClose, preselectedProject, calc
                   onChange={(e) => setService(e.target.value)}
                   className="w-full px-3 py-2 text-xs rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-[#111217] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
-                  <option value="Branding & Graphics">Branding & Graphics</option>
-                  <option value="UI/UX & Interactive">UI/UX & Interactive</option>
+                  <option value="Branding & Graphics">
+                    Branding & Graphics
+                  </option>
+                  <option value="UI/UX & Interactive">
+                    UI/UX & Interactive
+                  </option>
                   <option value="Vector Art">Vector Art & Illustration</option>
                   <option value="Print & Packaging">Print & Packaging</option>
                   <option value="Motion & Video">Motion & Video</option>
@@ -135,10 +187,14 @@ export default function ContactModal({ isOpen, onClose, preselectedProject, calc
                   onChange={(e) => setTimeline(e.target.value)}
                   className="w-full px-3 py-2 text-xs rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-[#111217] text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
-                  <option value="Immediate (< 2 weeks)">Immediate (&lt; 2 weeks)</option>
+                  <option value="Immediate (< 2 weeks)">
+                    Immediate (&lt; 2 weeks)
+                  </option>
                   <option value="2-4 weeks">2-4 weeks</option>
                   <option value="1-2 months">1-2 months</option>
-                  <option value="Flexible / Retainer">Flexible / Retainer</option>
+                  <option value="Flexible / Retainer">
+                    Flexible / Retainer
+                  </option>
                 </select>
               </div>
             </div>
@@ -157,16 +213,18 @@ export default function ContactModal({ isOpen, onClose, preselectedProject, calc
               />
             </div>
 
+            {error && <p className="text-xs text-rose-500">{error}</p>}
+            
             <button
               type="submit"
+              disabled={sending}
               className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs font-semibold bg-gray-900 hover:bg-black text-white dark:bg-indigo-600 dark:hover:bg-indigo-500 shadow-md shadow-indigo-600/20 transition-all hover:scale-[1.01]"
             >
               <Send className="w-3.5 h-3.5" />
-              <span>Submit Project Inquiry</span>
+              <span>{sending ? "Sending…" : "Submit Project Inquiry"}</span>
             </button>
           </form>
         )}
-
       </div>
     </div>
   );
