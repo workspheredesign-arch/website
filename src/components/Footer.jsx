@@ -1,17 +1,15 @@
-import React from 'react';
-import { ArrowUp, Sparkles, Heart } from 'lucide-react';
+import React from "react";
+import { ArrowUp, Sparkles, Heart } from "lucide-react";
 
 export default function Footer({ onOpenAdmin, onOpenContact }) {
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
     <footer className="mt-24 border-t border-gray-200 dark:border-white/10 bg-white/50 dark:bg-black/30 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-gray-200/60 dark:border-white/5">
-          
           {/* Col 1: Brand */}
           <div className="md:col-span-2 space-y-3">
             <div className="flex items-center gap-3">
@@ -32,7 +30,9 @@ export default function Footer({ onOpenAdmin, onOpenContact }) {
               </div>
             </div>
             <p className="text-xs text-gray-700 dark:text-gray-300 max-w-sm leading-relaxed">
-              Bespoke visual architecture studio. From print-ready static vector masterpieces in CorelDraw & Illustrator, to high-fidelity interactive systems in Figma & Lunacy.
+              Bespoke visual architecture studio. From print-ready static vector
+              masterpieces in CorelDraw & Illustrator, to high-fidelity
+              interactive systems in Figma & Lunacy.
             </p>
           </div>
 
@@ -61,8 +61,7 @@ export default function Footer({ onOpenAdmin, onOpenContact }) {
                   onClick={onOpenAdmin}
                   className="hover:text-indigo-600 dark:hover:text-white transition-colors flex items-center gap-1.5"
                 >
-                  <span>Studio Upload Manager</span>
-                  <span className="text-[10px] font-mono px-1 rounded bg-indigo-50 dark:bg-white/10 text-indigo-600 dark:text-indigo-300">Admin</span>
+                  <span>Team Login</span>
                 </button>
               </li>
               <li>
@@ -80,7 +79,6 @@ export default function Footer({ onOpenAdmin, onOpenContact }) {
               </li>
             </ul>
           </div>
-
         </div>
 
         {/* Bottom copyright & scroll-to-top */}
@@ -103,7 +101,6 @@ export default function Footer({ onOpenAdmin, onOpenContact }) {
             </button>
           </div>
         </div>
-
       </div>
     </footer>
   );

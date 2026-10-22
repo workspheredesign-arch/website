@@ -2,7 +2,7 @@ import React from 'react';
 import ProjectCard from './ProjectCard';
 import { Layers, Sparkles } from 'lucide-react';
 
-export default function MasonryGrid({ projects, onSelectProject, onOpenAdmin }) {
+export default function MasonryGrid({ projects, onSelectProject, onOpenAdmin, isAdmin }) {
   if (projects.length === 0) {
     return (
       <div className="py-24 text-center glass-panel rounded-3xl p-8 max-w-xl mx-auto border border-gray-200 dark:border-white/10">
@@ -13,8 +13,9 @@ export default function MasonryGrid({ projects, onSelectProject, onOpenAdmin }) 
           No matching designs found
         </h3>
         <p className="text-sm text-gray-700 dark:text-gray-300 mb-6">
-          Try clearing your search query or tool filters, or upload a new design to this category using the Studio Admin.
+          Try clearing your search query or tool filters{isAdmin ? ', or upload a new design to this category using the Studio Admin.' : '.'}
         </p>
+        {isAdmin && (
         <button
           onClick={onOpenAdmin}
           className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-md shadow-indigo-600/20 transition-all"
@@ -22,6 +23,7 @@ export default function MasonryGrid({ projects, onSelectProject, onOpenAdmin }) 
           <Sparkles className="w-4 h-4" />
           <span>Upload Design to Studio</span>
         </button>
+        )}
       </div>
     );
   }

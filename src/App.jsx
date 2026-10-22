@@ -252,6 +252,7 @@ export default function App() {
             projects={filteredProjects}
             onSelectProject={setActiveProject}
             onOpenAdmin={() => setIsAdminOpen(true)}
+            isAdmin={isAdmin}
           />
         )}
 
