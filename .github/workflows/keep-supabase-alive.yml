@@ -1,0 +1,16 @@
+name: Keep Supabase alive
+
+on:
+  schedule:
+    - cron: "0 8 */3 * *"   # every 3 days at 08:00 UTC
+  workflow_dispatch:         # lets you run it by hand from the Actions tab
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Query the projects table
+        run: |
+          curl --fail --silent --show-error --max-time 20 \
+            "https://ocirdnajtwkjiixjuzqg.supabase.co/rest/v1/projects?select=id&limit=1" \
+            -H "apikey: sb_publishable_91QY7yAbCOccpO3HPt98Tw_fE9YSQUd"
